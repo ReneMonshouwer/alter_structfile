@@ -85,6 +85,7 @@ for f=1:size(list,1)
                 if(nargin==2)
                     fprintf('\n No contours entered to leave, probably an error so will not rewrite file' );
                     save_this_data=0;
+                end
             end;
             
             %here make loop over all contours entered and after loop over
@@ -117,7 +118,7 @@ for f=1:size(list,1)
                     info.RTROIObservationsSequence=rmfield(info.RTROIObservationsSequence,name_item);
                 end;
             end;
-            end;   
+               
         %
         %   print
         %
@@ -138,7 +139,7 @@ for f=1:size(list,1)
               
             
     otherwise
-          fprintf('Invalid option\n' );
+          fprintf('\nInvalid option\n' );
           return;
     end
     if(save_this_data==1);
