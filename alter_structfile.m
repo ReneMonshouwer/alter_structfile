@@ -98,7 +98,7 @@ for f=1:size(list,1)
                 fprintf('\nChecking contours for name : %s to select, found :',name);
                 for i=1:n_contours
                     value = eval(  sprintf('info.StructureSetROISequence.Item_%i.ROIName',i)  );
-                    if( sum(strcmp(value,name)) == 1 )
+                    if( strcmp(value,name)  )
                         items_to_delete(cnt)=i;
                         fprintf('%i/',i);
                         cnt=cnt+1;
@@ -110,7 +110,8 @@ for f=1:size(list,1)
             %now do the real deleting
             for k=1:n_contours
                 ismember(k,items_to_delete);
-                if(ismember(k,items_to_delete) ~= condition )
+                type =  eval(  sprintf('info.ROIContourSequence.Item_%i.ContourSequence.Item_1.ContourGeometricType',k)  );
+                if(ismember(k,items_to_delete) ~= condition && ~strcmp(type,'POINT') )
                     fprintf('\n*******item nr %i is being deleted..... ******',k);
                     name_item=sprintf('Item_%i',k);
                     info.ROIContourSequence=rmfield(info.ROIContourSequence,name_item);
