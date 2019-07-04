@@ -110,7 +110,11 @@ for f=1:size(list,1)
             %now do the real deleting
             for k=1:n_contours
                 ismember(k,items_to_delete);
-                type =  eval(  sprintf('info.ROIContourSequence.Item_%i.ContourSequence.Item_1.ContourGeometricType',k)  );
+                try
+                    type =  eval(  sprintf('info.ROIContourSequence.Item_%i.ContourSequence.Item_1.ContourGeometricType',k)  );
+                catch
+                    type = ' ContourGeometricType not found';
+                end;
                 if(ismember(k,items_to_delete) ~= condition && ~strcmp(type,'POINT') )
                     fprintf('\n*******item nr %i is being deleted..... ******',k);
                     name_item=sprintf('Item_%i',k);
