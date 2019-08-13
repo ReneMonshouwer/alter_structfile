@@ -9,8 +9,8 @@ Earlier Matlab versions are also working, only the "**/*" (nested wildcard) does
 The executable : alter_structfile.exe can be used after installation of the matlab runtime environment on your computer
 This is possible without a Matlab licence
 
-
-
+See link below for instructions to install the runtime environment
+https://nl.mathworks.com/help/compiler/install-the-matlab-runtime.html
 
 
 
