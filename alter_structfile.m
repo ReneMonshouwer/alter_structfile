@@ -12,6 +12,10 @@ function alter_structfile(option,filename,varargin)
 %        alter_structfile -l a.dcm name1 name2 name3 name4 ..
 %   -p print option : print all rois
 %       alter_structfile -p a.dcm
+%   -t tag editing option : create or change a tag
+%       alter_structfile -t a.dcm tag_name tag_value
+%       tag_name is in Matlab format, alter_structfile -t a.dcm plots all 
+%       tags (to easily investigate the syntax / find the tag names)
 %
 %   from Matlab 2018 on you can use **/*.dcm like arguments to go to 
 %   deeper folder levels
@@ -141,7 +145,21 @@ for f=1:size(list,1)
                 end;
                 fprintf('\n%i\t%s\t%s',i,name,type);
             end;
-              
+            
+       %
+       %    alter tags
+       %
+       case {'-t'}  
+           %to create or modify a dicom tag
+           if( (nargin-2) ~= 2 )
+                info
+                fprintf('\nExiting ! : number of extra arguments should be 2 for this option\n\n');
+                return
+            end;
+           tag_name=varargin{1};
+           tag_value=varargin{2};
+           command=sprintf('info.%s=''%s'';',tag_name,tag_value)
+           eval(command);
             
     otherwise
           fprintf('\nInvalid option\n' );
