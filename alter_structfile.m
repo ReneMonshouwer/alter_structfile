@@ -16,6 +16,7 @@ function alter_structfile(option,filename,varargin)
 %       alter_structfile -t a.dcm tag_name tag_value
 %       tag_name is in Matlab format, alter_structfile -t a.dcm plots all 
 %       tags (to easily investigate the syntax / find the tag names)
+%       for tag_value : 'EMPTY', an empty string ('') is inserted
 %
 %   from Matlab 2018 on you can use **/*.dcm like arguments to go to 
 %   deeper folder levels
@@ -158,6 +159,13 @@ for f=1:size(list,1)
             end;
            tag_name=varargin{1};
            tag_value=varargin{2};
+
+           %from commandline it is difficult to specify an 'empty' value
+           %therefore this option
+           if(strcmp(tag_value,'EMPTY')==1)
+               tag_value='';
+           end;
+           
            command=sprintf('info.%s=''%s'';',tag_name,tag_value)
            eval(command);
             
