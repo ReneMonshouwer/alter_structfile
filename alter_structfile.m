@@ -17,6 +17,12 @@ function alter_structfile(option,filename,varargin)
 %       tag_name is in Matlab format, alter_structfile -t a.dcm plots all 
 %       tags (to easily investigate the syntax / find the tag names)
 %       for tag_value : 'EMPTY', an empty string ('') is inserted
+%   -c coloring option to change color of the roi
+%       alter_structfile -c a.dcm roiname1 c1 c2 c3 roiname2 c1' c2' c3
+%       where c1,c2,c3 are the three elements of the color vector (0..255)
+%       (when using the routine in subroutine style: enter c#'s as string,
+%       compiled version can be used without quotes).
+%       ROI name comparison is case insensitive
 %
 %   from Matlab 2018 on you can use **/*.dcm like arguments to go to 
 %   deeper folder levels
@@ -168,7 +174,42 @@ for f=1:size(list,1)
            
            command=sprintf('info.%s=''%s'';',tag_name,tag_value)
            eval(command);
-            
+           
+       %
+       %    Color the rois
+       %     
+        case '-c'
+            fprintf('\nColouring option selected' );
+            if(rem(nargin-2,4)==1)
+                disp(['\nnumber of arguments should be qudruples '...
+                    ' so : OARname color1 color2 color3']);
+                return
+            end;
+            %here make loop over all name/color pairs and after 
+            %loop over all rois
+            for k=1:4:nargin-2
+                name=varargin{k};
+                c1=varargin{k+1};
+                c2=varargin{k+2};
+                c3=varargin{k+3};
+             
+
+                fprintf(['\n\n checking all contours for name : %s'...
+                    ' to set the color\n'],name);
+                for i=1:n_contours
+                    value=eval(sprintf(['info.StructureSetROI'...
+                        'Sequence.Item_%i.ROIName'],i));
+                    fprintf('%i:%s/',i,value);
+                    
+                    if( sum(strcmp(lower(value),lower(name))) == 1 )
+                        fprintf(['\n***item nr %i is %s  coloring '...
+                            'to [%s,%s,%s]*******\n'],i,name,c1,c2,c3);
+                            eval(sprintf(['info.ROIContour'...
+                            'Sequence.Item_%i.ROIDisplayColor=[%s;%s;%s];'],i,c1,c2,c3));
+                    end;
+                end; 
+            end;
+             
     otherwise
           fprintf('\nInvalid option\n' );
           return;
