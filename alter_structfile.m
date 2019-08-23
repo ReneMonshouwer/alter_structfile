@@ -147,10 +147,12 @@ for f=1:size(list,1)
                 name = eval(  sprintf('info.StructureSetROISequence.Item_%i.ROIName',i)  );
                 try
                     type = eval(  sprintf('info.ROIContourSequence.Item_%i.ContourSequence.Item_1.ContourGeometricType',i)  );
+                    eval(  sprintf('c=info.ROIContourSequence.Item_%i.ROIDisplayColor(:);',i)  );
                 catch
                     type = ' ContourGeometricType not found';
+                    c(1)=0;c(2)=0;c(3)=0;
                 end;
-                fprintf('\n%i\t%s\t%s',i,name,type);
+                fprintf('\n%i\t%s\t%s\t[%i,%i,%i]',i,name,type,c(1),c(2),c(3));
             end;
             
        %
